@@ -16,18 +16,19 @@ export class Random {
     }
 
     static shuffle<T>(array: T[]){
-        // Алгоритм тасование Фишера — Йетса
+        //+ Алгоритм тасование Фишера — Йетса
+
         let currentIndex = array.length;
-        // While there remain elements to shuffle...
+
+        //+ Пока ещё остались элементы для тасования
         while (currentIndex != 0) {
 
-            // Pick a remaining element...
+            //+ Выбираем оставшийся элемент
             let randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
 
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
+            //+ Меняем местами с текущим элементом
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
         }
     }
 

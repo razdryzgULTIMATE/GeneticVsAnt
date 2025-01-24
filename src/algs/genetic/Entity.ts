@@ -7,7 +7,7 @@ export class Entity {
     constructor(maxRoute: number) {
         //! Заполнить случайными индексами городов route
         let i = 0;
-        while (i < maxRoute){
+        while (i < maxRoute) {
             this.route.push(i)
             i++
         }
@@ -26,12 +26,16 @@ export class Entity {
         * */
         for (let i = 0; i < distanceMatrix.length - 1; i++) {
             sum += distanceMatrix[this.route[i]][this.route[i + 1]]
-            console.log({i: i, j: i+1, dij: distanceMatrix[this.route[i]][this.route[i + 1]]}, sum)
+            // console.log({i: i, j: i + 1, dij: distanceMatrix[this.route[i]][this.route[i + 1]]}, sum)
         }
         return sum;
     }
-    mutate(){
-        //TODO сделать метод мутации
+
+    mutate(index1: number, index2: number) {
+        //* Мутация происходит путём изменения индексов городов местами
+        const tmp = this.route[index1]
+        this.route[index1] = this.route[index2]
+        this.route[index2] = tmp
     }
 
     get route(): number[] {
