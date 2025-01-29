@@ -11,8 +11,11 @@ export class Entity {
             this.route.push(i)
             i++
         }
+        // console.log("Route ", this.route)
         Random.shuffle(this.route)
-    }
+        // console.log("Route after shuffle ", this.route)
+    };
+
 
     //! Особь с максимально длинным маршрутом считаем непригодной
 
@@ -25,6 +28,8 @@ export class Entity {
         * sum += dm[1][2]
         * */
         for (let i = 0; i < distanceMatrix.length - 1; i++) {
+            // console.log({routei: this.route[i], routej: this.route[i + 1]})
+            // console.log({route: this.route})
             sum += distanceMatrix[this.route[i]][this.route[i + 1]]
             // console.log({i: i, j: i + 1, dij: distanceMatrix[this.route[i]][this.route[i + 1]]}, sum)
         }
@@ -36,6 +41,7 @@ export class Entity {
         const tmp = this.route[index1]
         this.route[index1] = this.route[index2]
         this.route[index2] = tmp
+        // console.log("Mutation\n", this.route)
     }
 
     get route(): number[] {
