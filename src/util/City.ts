@@ -1,4 +1,4 @@
 export class City {
-    constructor(public name: string, public x: number, public y: number) {
+    constructor(public readonly name: string, public readonly x: number, public readonly y: number) {
     }
 }

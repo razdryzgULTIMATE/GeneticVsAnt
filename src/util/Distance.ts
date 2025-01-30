@@ -20,11 +20,4 @@ export class Distance{
         return distanceMatrix
 
     }
-
-
-
-
-
-
-
 }

@@ -11,9 +11,7 @@ export class Entity {
             this.route.push(i)
             i++
         }
-        // console.log("Route ", this.route)
         Random.shuffle(this.route)
-        // console.log("Route after shuffle ", this.route)
     };
 
 
@@ -23,12 +21,13 @@ export class Entity {
         //* Рассчитываем расстояния пути
         let sum: number = 0
         /*
-        * [0,1,2]
-        * sum += dm[0][1]
-        * sum += dm[1][2]
+        * sum = 0
+        * route = [0,1,2]
+        * sum += dm[0][1] | <- dm[route[0]][route[1]]
+        * sum += dm[1][2] | <- dm[route[1]][route[2]]
         * */
         for (let i = 0; i < distanceMatrix.length - 1; i++) {
-            // console.log({routei: this.route[i], routej: this.route[i + 1]})
+            // console.log({route_i: this.route[i], route_j: this.route[i + 1]})
             // console.log({route: this.route})
             sum += distanceMatrix[this.route[i]][this.route[i + 1]]
             // console.log({i: i, j: i + 1, dij: distanceMatrix[this.route[i]][this.route[i + 1]]}, sum)
@@ -47,18 +46,13 @@ export class Entity {
     get route(): number[] {
         return this._route;
     }
-
     set route(value: number[]) {
         this._route = value;
     }
-
     get routeLen(): number {
         return this._routeLen;
     }
-
     set routeLen(value: number) {
         this._routeLen = value;
     }
-
-
 }

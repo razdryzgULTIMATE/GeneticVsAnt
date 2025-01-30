@@ -50,8 +50,6 @@ export class Population {
         const childs: Entity[] = []
         const citiesNumber = this.maxRoute / 2;
         while (childs.length < this.maxPopulation - this.entities.length) {
-
-            //? len - 1 ?
             const parentIndex1 = Random.randomInt(0, this.entities.length - 1)
             let parentIndex2 = Random.randomInt(0, this.entities.length - 1)
 
@@ -93,7 +91,7 @@ export class Population {
 
         //+ Подсчёт фитнес-функции для начальной популяции
         this.calculateAllFitness(distanceMatrix)
-        console.log("First Distance\n", this.entities[0].routeLen)
+        console.log("Best entity route length from Generation #0\n", this.entities[0].routeLen)
 
         let currentGeneration = 0
         const maxGen: number = this.maxGenerations
@@ -126,6 +124,7 @@ export class Population {
             this.calculateAllFitness(distanceMatrix)
             // console.log("After calculate fitness\n", this.entities)
             // visual.animateRoute(this.entities[0].route)
+            console.log("Best entity route length from Generation #" + (currentGeneration + 1) + "\n", this.entities[0].routeLen)
             currentGeneration++;
         }
         return this.entities[0]
@@ -136,7 +135,6 @@ export class Population {
         for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].routeLen = this.entities[i].calculateFitness(distanceMatrix)
         }
-
         this.sortEntities()
     }
 
