@@ -80,19 +80,21 @@ export class Population {
 
     //TODO убрать постоянную сортировку особей
     //! Сортировка нужна лишь для отбора, поэтому переписать отбор на турнирный или ещё какой
-    startSearch(visual: Visual) {
+    startSearch(visual: Visual): [number[], Entity] {
         //* Запуск алгоритма
 
         //+ Высчитываем матрицу расстояний(смежности)
         const cities: City[] = visual.getCities()
         const distanceMatrix: number[][] = Distance.distanceMatrix(cities)
-
+        console.log(distanceMatrix)
+        const history: number[] = []
         //+ Инициализация популяции
         this.initPopulation()
         // console.log("Initial Population", this.entities)
 
         //+ Подсчёт фитнес-функции для начальной популяции
         this.calculateAllFitness(distanceMatrix)
+        history.push(this.entities[0].routeLen)
         console.log("Best entity route length from Generation #0\n", this.entities[0].routeLen)
 
         let currentGeneration = 0
@@ -126,10 +128,11 @@ export class Population {
             this.calculateAllFitness(distanceMatrix)
             // console.log("After calculate fitness\n", this.entities)
             // visual.animateRoute(this.entities[0].route)
+            history.push(this.entities[0].routeLen)
             console.log("Best entity route length from Generation #" + (currentGeneration + 1) + "\n", this.entities[0].routeLen)
             currentGeneration++;
         }
-        return this.entities[0]
+        return [history, this.entities[0]]
     }
 
     calculateAllFitness(distanceMatrix: number[][]) {

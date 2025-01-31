@@ -32,7 +32,7 @@ document.querySelector<HTMLDivElement>('#settings-div')!.innerHTML = `
         <li><label for="mutationProbabilityInput">Вероятность мутации</label> <input type="number" id="mutationProbabilityInput" placeholder="0.2"/> </li>
         <li><label for="selectionPercentInput">Коэффициент отбора существ</label> <input type="number" id="selectionPercentInput" placeholder="0.3"/> </li>
         </ul>
-        
+        <div id="result"></div>
         <button id="generateCitiesButton">Сгенерировать города</button>
         <button id="fillTestCities">Заполнить тестовыми данными</button>
         <button id="startSearchButton">Начать поиск</button>
@@ -51,7 +51,9 @@ const maxPopInput = document.querySelector<HTMLInputElement>('#maxPopInput')!
 const mutationProbInput = document.querySelector<HTMLInputElement>('#mutationProbabilityInput')!
 const selectionPercentInput = document.querySelector<HTMLInputElement>('#selectionPercentInput')!
 
+const resultDiv = document.querySelector<HTMLDivElement>('#result')!
+
 setupGenerate(btnGenerate, visualizer, maxCitiesInput)
 setupTestData(btnFillWithTestData, visualizer)
-setupStartSearch(btnStartSearch, visualizer, [maxGenInput, maxPopInput, mutationProbInput, selectionPercentInput])
+setupStartSearch(btnStartSearch, visualizer, [maxGenInput, maxPopInput, mutationProbInput, selectionPercentInput], resultDiv)
 
