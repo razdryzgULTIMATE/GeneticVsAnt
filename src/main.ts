@@ -6,8 +6,8 @@ import './style.css'
 console.log("Init test")
 document.querySelector<HTMLDivElement>('#main-page')!.innerHTML =`
     <div>
-    <button id="genetic-button" onclick="window.open('/src/pages/genetic/genetic.html', '_blank')">Генетический алгоритм</button>
-    <button id="ant-button">Муравьиный алгоритм</button>
+        <button id="genetic-button" onclick="window.open('/src/pages/genetic/genetic.html', '_blank')">Генетический алгоритм</button>
+        <button id="ant-button">Муравьиный алгоритм</button>
     </div>
 `
 

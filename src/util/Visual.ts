@@ -1,6 +1,6 @@
 import {City} from "./City.ts";
 
-
+//+ Класс отвечает за визуализацию графа, его создание и отрисовку маршрута
 export default class Visual {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -32,7 +32,7 @@ export default class Visual {
         this.cities.forEach(city => {
             this.ctx.fillStyle = 'blue';
             this.ctx.beginPath();
-            this.ctx.arc(city.x, city.y, 5, 0, Math.PI * 2);
+            this.ctx.arc(city.x, city.y, 6, 0, Math.PI * 2);
             this.ctx.fill();
             this.ctx.fillStyle = 'black';
             this.ctx.fillText(city.name, city.x - 5, city.y - 10);
@@ -43,6 +43,7 @@ export default class Visual {
 
     // Метод для рисования маршрута
     private drawRoute(): void {
+        // this.drawCities();
         this.ctx.strokeStyle = 'red';
         this.ctx.beginPath();
         if (this.route.length > 0) {
@@ -81,9 +82,11 @@ export default class Visual {
     }
 
     generateCities(N: number) {
+        this.cities = []
+        this.route = []
         // N - количество городов для генерации
-        const w = this.canvas.width
-        const h = this.canvas.height
+        const w = this.canvas.width - 20
+        const h = this.canvas.height - 20
         let x = 0;
         let y = 0;
         let i = 0;
@@ -98,9 +101,22 @@ export default class Visual {
         }
         this.drawCities()
     }
-    showCitiesAsJSON(){
+    constructGraphWithCities(cities: City[]){
+        this.cities = []
+        this.route = []
+        this.cities = cities
+        this.drawCities()
+    }
+
+
+    citiesToJSON(){
         const json = JSON.stringify(this.cities, null, 2)
-        console.log(json)
+        // console.log(json)
+        return json
+    }
+    static JSONToCities(json: string){
+        const cities: City[] = JSON.parse(json)
+        return cities
     }
 
 
