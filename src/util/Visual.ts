@@ -1,6 +1,6 @@
 import {City} from "./City.ts";
 
-
+//+ Класс отвечает за визуализацию графа, его создание и отрисовку маршрута
 export default class Visual {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;

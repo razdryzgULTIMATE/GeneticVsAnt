@@ -30,6 +30,7 @@ export class Population {
         return this.entities
     }
 
+    //TODO Сделать турнирный отбор особей
     selection() {
         //! Отбор особей
         //+ сортируем в порядке возрастания, чтобы убрать особей с самым длинным маршрутом (они будут располагаться в конце массива)
@@ -77,7 +78,8 @@ export class Population {
         this.entities.sort((a, b) => a.routeLen - b.routeLen)
     }
 
-
+    //TODO убрать постоянную сортировку особей
+    //! Сортировка нужна лишь для отбора, поэтому переписать отбор на турнирный или ещё какой
     startSearch(visual: Visual) {
         //* Запуск алгоритма
 
@@ -99,7 +101,7 @@ export class Population {
 
         while (currentGeneration < maxGen) {
             // console.log(distanceMatrix)
-            this.sortEntities()
+            // this.sortEntities()
 
             //- Отбор
             this.selection()
@@ -112,7 +114,7 @@ export class Population {
             //+ Мутация некоторых особей
             let mP: number = Math.random()
             if (mP > this.mutationProb) {
-                let from = Random.randomInt(0, length - 1)
+                let from = Random.randomInt(1, length - 1)
                 let to = Random.randomInt(from, length - 1)
                 // console.log({from: from, to: to})
                 // this.mutateAll()
@@ -156,52 +158,39 @@ export class Population {
         }
     }
 
-
     get entities(): Entity[] {
         return this._entities;
     }
-
     set entities(value: Entity[]) {
         this._entities = value;
     }
-
     get maxPopulation(): number {
         return this._maxPopulation;
     }
-
     set maxPopulation(value: number) {
         this._maxPopulation = value;
     }
-
     get maxGenerations(): number {
         return this._maxGenerations;
     }
-
     set maxGenerations(value: number) {
         this._maxGenerations = value;
     }
-
     get mutationProb(): number {
         return this._mutationProb;
     }
-
     set mutationProb(value: number) {
         this._mutationProb = value;
     }
-
-
     get maxRoute(): number {
         return this._maxRoute;
     }
-
     set maxRoute(value: number) {
         this._maxRoute = value;
     }
-
     get selectionPercent(): number {
         return this._selectionPercent;
     }
-
     set selectionPercent(value: number) {
         this._selectionPercent = value;
     }

@@ -2,8 +2,38 @@ import Visual from "../../util/Visual.ts";
 import {Population} from "../../algs/genetic/Population.ts";
 import {City} from "../../util/City.ts";
 
-// const settings = document.querySelector<HTMLDivElement>('#settings-div')!.innerHTML
-
+document.querySelector<HTMLDivElement>('#settings-div')!.innerHTML = `
+    <div>
+    <style>
+    ul{
+        padding: 0;
+    }
+    li{
+        list-style-type: none;
+        display: flex; /* Используем flexbox для выравнивания элементов в строку */
+        align-items: center; /* Выравниваем элементы по вертикали по центру */
+        margin-bottom: 10px; /* Добавляем небольшой отступ между строками */
+    }
+    label {
+        flex: 0 0 250px; /* Устанавливаем фиксированную ширину для меток */
+    }
+    button{
+    margin-bottom: 20px;
+    }
+    </style>
+        <ul>
+        <li><label for="maxCitiesInput">Максимальное количество городов</label> <input type="number" id="maxCitiesInput"/> </li>
+        <li><label for="maxGenInput">Максимальное число поколений</label> <input type="number" id="maxGenInput"/> </li>
+        <li><label for="maxPopInput">Максимальная популяция</label> <input type="number" id="maxPopInput"/> </li>
+        <li><label for="mutationProbabilityInput">Вероятность мутации</label> <input type="number" id="mutationProbabilityInput"/> </li>
+        <li><label for="selectionPercentInput">Коэффициент отбора существ</label> <input type="number" id="selectionPercentInput"/> </li>
+        </ul>
+        
+        <button>Сгенерировать города</button>
+        <button>Заполнить тестовыми данными</button>
+        <button>Начать поиск</button>
+    </div>
+`
 
 const citiesJSON: string = "[\n" +
     "  {\n" +
