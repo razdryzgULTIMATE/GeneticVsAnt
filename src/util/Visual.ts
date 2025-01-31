@@ -82,9 +82,11 @@ export default class Visual {
     }
 
     generateCities(N: number) {
+        this.cities = []
+        this.route = []
         // N - количество городов для генерации
-        const w = this.canvas.width
-        const h = this.canvas.height
+        const w = this.canvas.width - 20
+        const h = this.canvas.height - 20
         let x = 0;
         let y = 0;
         let i = 0;
@@ -100,6 +102,8 @@ export default class Visual {
         this.drawCities()
     }
     constructGraphWithCities(cities: City[]){
+        this.cities = []
+        this.route = []
         this.cities = cities
         this.drawCities()
     }

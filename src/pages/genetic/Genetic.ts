@@ -1,10 +1,12 @@
 import Visual from "../../util/Visual.ts";
-import {Population} from "../../algs/genetic/Population.ts";
-import {City} from "../../util/City.ts";
+import {setupGenerate, setupStartSearch, setupTestData} from "./Listeners.ts";
 
 document.querySelector<HTMLDivElement>('#settings-div')!.innerHTML = `
     <div>
     <style>
+    div{
+        font-size: 18px;
+    }
     ul{
         padding: 0;
     }
@@ -15,148 +17,41 @@ document.querySelector<HTMLDivElement>('#settings-div')!.innerHTML = `
         margin-bottom: 10px; /* Добавляем небольшой отступ между строками */
     }
     label {
-        flex: 0 0 250px; /* Устанавливаем фиксированную ширину для меток */
+        flex: 0 0 300px; /* Устанавливаем фиксированную ширину для меток */
     }
     button{
     margin-bottom: 20px;
+    font-size: 14px;
     }
     </style>
+        <a href="../help/help-genetic/help-genetic.html">Справка по генетическому алгоритму</a>
         <ul>
-        <li><label for="maxCitiesInput">Максимальное количество городов</label> <input type="number" id="maxCitiesInput"/> </li>
-        <li><label for="maxGenInput">Максимальное число поколений</label> <input type="number" id="maxGenInput"/> </li>
-        <li><label for="maxPopInput">Максимальная популяция</label> <input type="number" id="maxPopInput"/> </li>
-        <li><label for="mutationProbabilityInput">Вероятность мутации</label> <input type="number" id="mutationProbabilityInput"/> </li>
-        <li><label for="selectionPercentInput">Коэффициент отбора существ</label> <input type="number" id="selectionPercentInput"/> </li>
+        <li><label for="maxCitiesInput">Максимальное количество городов</label> <input type="number" id="maxCitiesInput" placeholder="20"/> </li>
+        <li><label for="maxGenInput">Максимальное число поколений</label> <input type="number" id="maxGenInput" placeholder="1000"/> </li>
+        <li><label for="maxPopInput">Максимальная популяция</label> <input type="number" id="maxPopInput" placeholder="100"/> </li>
+        <li><label for="mutationProbabilityInput">Вероятность мутации</label> <input type="number" id="mutationProbabilityInput" placeholder="0.2"/> </li>
+        <li><label for="selectionPercentInput">Коэффициент отбора существ</label> <input type="number" id="selectionPercentInput" placeholder="0.3"/> </li>
         </ul>
         
-        <button>Сгенерировать города</button>
-        <button>Заполнить тестовыми данными</button>
-        <button>Начать поиск</button>
+        <button id="generateCitiesButton">Сгенерировать города</button>
+        <button id="fillTestCities">Заполнить тестовыми данными</button>
+        <button id="startSearchButton">Начать поиск</button>
     </div>
 `
 
-const citiesJSON: string = "[\n" +
-    "  {\n" +
-    "    \"name\": \"0\",\n" +
-    "    \"x\": 821,\n" +
-    "    \"y\": 180\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"1\",\n" +
-    "    \"x\": 795,\n" +
-    "    \"y\": 344\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"2\",\n" +
-    "    \"x\": 337,\n" +
-    "    \"y\": 37\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"3\",\n" +
-    "    \"x\": 453,\n" +
-    "    \"y\": 352\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"4\",\n" +
-    "    \"x\": 788,\n" +
-    "    \"y\": 231\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"5\",\n" +
-    "    \"x\": 1103,\n" +
-    "    \"y\": 205\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"6\",\n" +
-    "    \"x\": 1035,\n" +
-    "    \"y\": 478\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"7\",\n" +
-    "    \"x\": 936,\n" +
-    "    \"y\": 318\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"8\",\n" +
-    "    \"x\": 1059,\n" +
-    "    \"y\": 556\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"9\",\n" +
-    "    \"x\": 254,\n" +
-    "    \"y\": 459\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"10\",\n" +
-    "    \"x\": 524,\n" +
-    "    \"y\": 413\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"11\",\n" +
-    "    \"x\": 338,\n" +
-    "    \"y\": 566\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"12\",\n" +
-    "    \"x\": 196,\n" +
-    "    \"y\": 619\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"13\",\n" +
-    "    \"x\": 587,\n" +
-    "    \"y\": 220\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"14\",\n" +
-    "    \"x\": 738,\n" +
-    "    \"y\": 236\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"15\",\n" +
-    "    \"x\": 543,\n" +
-    "    \"y\": 395\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"16\",\n" +
-    "    \"x\": 564,\n" +
-    "    \"y\": 593\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"17\",\n" +
-    "    \"x\": 984,\n" +
-    "    \"y\": 265\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"18\",\n" +
-    "    \"x\": 159,\n" +
-    "    \"y\": 52\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"name\": \"19\",\n" +
-    "    \"x\": 590,\n" +
-    "    \"y\": 168\n" +
-    "  }\n" +
-    "]\n"
-const cities: City[] = Visual.JSONToCities(citiesJSON)
-
 const visualizer = new Visual('geneticCanvas');
-const maxCities: number = 20
-const maxGen: number = 5000
-const maxPop: number = 100
-const mutationProbability = 0.3
-const selectionPercent = 0.4
 
-//visualizer.generateCities(maxCities);
-visualizer.constructGraphWithCities(cities)
+const btnGenerate: HTMLButtonElement = document.querySelector<HTMLButtonElement>('#generateCitiesButton')!
+const btnFillWithTestData: HTMLButtonElement = document.querySelector<HTMLButtonElement>('#fillTestCities')!
+const btnStartSearch: HTMLButtonElement = document.querySelector<HTMLButtonElement>('#startSearchButton')!
 
+const maxCitiesInput = document.querySelector<HTMLInputElement>('#maxCitiesInput')!
+const maxGenInput = document.querySelector<HTMLInputElement>('#maxGenInput')!
+const maxPopInput = document.querySelector<HTMLInputElement>('#maxPopInput')!
+const mutationProbInput = document.querySelector<HTMLInputElement>('#mutationProbabilityInput')!
+const selectionPercentInput = document.querySelector<HTMLInputElement>('#selectionPercentInput')!
 
-const pop = new Population(maxPop, maxGen, mutationProbability, maxCities, selectionPercent)
-const rte = pop.startSearch(visualizer)
-console.log("-----------------------------------\n")
-console.log("Min route: \n", rte.route)
-console.log("Min distance: ", rte.routeLen)
-visualizer.animateRoute(rte.route);
-// const jsonCitiesString = visualizer.citiesToJSON()
-// console.log(jsonCitiesString)
-// const cities: City[] = JSON.parse(jsonCitiesString)
-// console.log(cities)
+setupGenerate(btnGenerate, visualizer, maxCitiesInput)
+setupTestData(btnFillWithTestData, visualizer)
+setupStartSearch(btnStartSearch, visualizer, [maxGenInput, maxPopInput, mutationProbInput, selectionPercentInput])
+
